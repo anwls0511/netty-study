@@ -26,6 +26,13 @@ application {
     mainClass = 'com.mujin.study.netty.NettyStudyApplication'
 }
 
+tasks.register('runBoundaryClient', JavaExec) {
+    group = 'application'
+    description = 'Runs the TCP message boundary experiment client.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'com.mujin.study.netty.client.BoundaryExperimentClient'
+}
+
 tasks.named('test') {
     useJUnitPlatform()
 }

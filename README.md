@@ -58,6 +58,22 @@ macOS / Linux:
 
 서버는 기본적으로 `9000` 포트에서 실행됩니다.
 
+## Day 2 실험 클라이언트
+
+서버를 먼저 실행한 뒤, 다른 터미널에서 아래 명령을 실행합니다.
+
+```powershell
+.\gradlew.bat runBoundaryClient
+```
+
+이 클라이언트는 다음 세 가지 상황을 전송합니다.
+
+| 케이스 | 설명 |
+| --- | --- |
+| case 1 | 완성된 JSON 메시지 1개 전송 |
+| case 2 | JSON 메시지 1개를 두 번에 나눠 전송 |
+| case 3 | JSON 메시지 2개를 한 번에 붙여서 전송 |
+
 ## 메시지 예시
 
 한 줄에 하나의 JSON 메시지를 보냅니다.
@@ -77,3 +93,4 @@ macOS / Linux:
 ## 문서
 
 - [Netty 기반 TCP 메시지 처리 설계 기록](docs/blog/2026-06-08-netty-design.md)
+- [Netty Day 2: TCP 메시지 경계 실험](docs/blog/2026-06-09-netty-message-boundary.md)
