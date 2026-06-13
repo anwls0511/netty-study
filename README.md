@@ -96,3 +96,5 @@ macOS / Linux:
 - [Netty Day 2: TCP 메시지 경계 실험](docs/blog/2026-06-09-netty-message-boundary.md)
 - [Netty Day 3: Decoder 테스트 보강](docs/blog/2026-06-10-netty-decoder-test.md)
 - [Netty Day 4: LengthFieldBasedFrameDecoder 실험](docs/blog/2026-06-11-netty-length-field-decoder.md)
+- [Netty Day 4 보강: Decoder edge case 테스트](docs/blog/2026-06-12-netty-decoder-edge-cases.md)
+- [Netty Day 5: Decoder 검증 정책 보강](docs/blog/2026-06-13-netty-decoder-validation.md)

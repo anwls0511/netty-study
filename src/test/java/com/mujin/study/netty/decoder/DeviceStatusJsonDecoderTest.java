@@ -43,4 +43,65 @@ class DeviceStatusJsonDecoderTest {
 
         assertThrows(DecoderException.class, () -> channel.writeInbound("not-json"));
     }
+
+    @Test
+    void trimsWhitespaceBeforeDecodingJson() {
+        EmbeddedChannel channel = new EmbeddedChannel(new DeviceStatusJsonDecoder());
+
+        channel.writeInbound("""
+                   
+                   {"deviceId":"device-1","temperature":25.1,"humidity":40.2,"timestamp":1717830000}
+                   
+                """);
+
+        DeviceStatus status = channel.readInbound();
+
+        assertEquals("device-1", status.deviceId());
+        assertNull(channel.readInbound());
+    }
+
+    @Test
+    void throwsDecoderExceptionWhenUnknownFieldExists() {
+        EmbeddedChannel channel = new EmbeddedChannel(new DeviceStatusJsonDecoder());
+
+        assertThrows(DecoderException.class, () -> channel.writeInbound("""
+                {"deviceId":"device-1","temperature":25.1,"humidity":40.2,"timestamp":1717830000,"battery":90}
+                """));
+    }
+
+    @Test
+    void throwsDecoderExceptionWhenDeviceIdIsMissing() {
+        EmbeddedChannel channel = new EmbeddedChannel(new DeviceStatusJsonDecoder());
+
+        assertThrows(DecoderException.class, () -> channel.writeInbound("""
+                {"temperature":25.1,"humidity":40.2,"timestamp":1717830000}
+                """));
+    }
+
+    @Test
+    void throwsDecoderExceptionWhenDeviceIdIsBlank() {
+        EmbeddedChannel channel = new EmbeddedChannel(new DeviceStatusJsonDecoder());
+
+        assertThrows(DecoderException.class, () -> channel.writeInbound("""
+                {"deviceId":" ","temperature":25.1,"humidity":40.2,"timestamp":1717830000}
+                """));
+    }
+
+    @Test
+    void throwsDecoderExceptionWhenHumidityIsOutOfRange() {
+        EmbeddedChannel channel = new EmbeddedChannel(new DeviceStatusJsonDecoder());
+
+        assertThrows(DecoderException.class, () -> channel.writeInbound("""
+                {"deviceId":"device-1","temperature":25.1,"humidity":101.0,"timestamp":1717830000}
+                """));
+    }
+
+    @Test
+    void throwsDecoderExceptionWhenTimestampIsMissing() {
+        EmbeddedChannel channel = new EmbeddedChannel(new DeviceStatusJsonDecoder());
+
+        assertThrows(DecoderException.class, () -> channel.writeInbound("""
+                {"deviceId":"device-1","temperature":25.1,"humidity":40.2}
+                """));
+    }
 }

@@ -19,6 +19,23 @@ public class DeviceStatusJsonDecoder extends MessageToMessageDecoder<String> {
             return;
         }
 
-        out.add(objectMapper.readValue(trimmed, DeviceStatus.class));
+        DeviceStatus status = objectMapper.readValue(trimmed, DeviceStatus.class);
+        validate(status);
+
+        out.add(status);
+    }
+
+    private void validate(DeviceStatus status) {
+        if (status.deviceId() == null || status.deviceId().isBlank()) {
+            throw new IllegalArgumentException("deviceId is required");
+        }
+
+        if (status.humidity() < 0 || status.humidity() > 100) {
+            throw new IllegalArgumentException("humidity must be between 0 and 100");
+        }
+
+        if (status.timestamp() <= 0) {
+            throw new IllegalArgumentException("timestamp must be positive");
+        }
     }
 }
